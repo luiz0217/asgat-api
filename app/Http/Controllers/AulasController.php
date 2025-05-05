@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redis;
 
 class AulasController extends Controller
 {
-    public function criarAula(Request $request)
+    public function CriarAula(Request $request)
     {
         $user = $request->user();
         $treino = treino::where('user_id', $user['id'])->where('id', $request['treino_id'])->firt();
@@ -35,12 +35,23 @@ class AulasController extends Controller
     public function BuscarAulas(Request $request)
     {
         $mes = $request->query('mes');
-
+        $user = $request->user();
         if (!$mes) {
             return response()->json(['error' => 'Faltando o mes']);
         }
 
-        $aulas = aulas::whereRaw("DATE_FORMAT(data, '%Y-%m')=?", [$mes])->orderBy('data')->get();
+        $aulas = aulas::whereRaw("DATE_FORMAT(data, '%Y-%m')=?", [$mes])
+        ->where('user_id',$user['id'])
+        ->orderBy('data')
+        ->get();
+
+        return response()->json($aulas);
+    }
+
+    public function BuscarAula(Request $request)
+    {
+        $user = $request->user();
+        $aulas = aulas::where('user_id',$user['id'])->where('id',$request['aula_id'])->first();
 
         return response()->json($aulas);
     }

@@ -12,4 +12,9 @@ class treino extends Model
         'tipo', 
         'user_id'
     ];
+    
+    public function exercicios()
+    {
+        return $this->hasMany(exercicios::class);
+    }
 }

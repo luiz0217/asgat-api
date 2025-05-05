@@ -11,7 +11,10 @@ class turmaXalunos extends Model
 
     protected $table = 'turmasxalunos';
 
-    protected $fillable = ['aluno_id','turma_id'];
+    protected $fillable = [
+        'aluno_id',
+        'turma_id'
+    ];
 
     public $timestamps = true;
 
