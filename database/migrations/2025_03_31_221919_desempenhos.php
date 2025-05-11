@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign('aula_id')->references('id')->on('aulas');
             $table->foreign('aluno_id')->references('id')->on('alunos');
             $table->foreign('treino_id')->references('id')->on('treinos');
-            $table->foreign('eexercicio_id')->references('id')->on('exercicios');
+            $table->foreign('exercicio_id')->references('id')->on('exercicios');
             $table->timestamps();
         });
     }
