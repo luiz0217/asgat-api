@@ -44,7 +44,6 @@ class AuthenticatedSessionController extends Controller
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'device_name' => 'required'
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -56,6 +55,6 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        return $user->createToken($request->device_name)->plainTextToken;
+        return $user->createToken('celuzerzinho123')->plainTextToken;
     }
 }
