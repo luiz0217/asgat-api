@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('alunos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->integer('idade');
+            $table->date('idade');
             $table->string('contato');
             $table->string('faixa');
-            $table->date('data_ingresso');;
+            $table->date('data_ingresso');
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

@@ -11,7 +11,7 @@ class AlunosController extends Controller
     {
         $request->validate([
             'nome' => 'required|string',
-            'idade' => 'required|numeric|integer',
+            'idade' => 'required',
             'contato' => 'required|numeric|integer',
             'faixa' => 'required|string',
             'data_ingresso' => 'required',
