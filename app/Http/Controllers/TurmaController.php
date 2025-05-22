@@ -22,6 +22,32 @@ class TurmaController extends Controller
 
             foreach ($request['alunos'] as $value) {
                 turmaXalunos::create([
+                    'aluno_id' => $value['id'],
+                    'turma_id' => $turma['id']
+                ]);
+            }
+
+            return response()->json('turma criada');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function AtualizarTurma(Request $request)
+    {
+        $user = $request->user();
+        try {
+            $turma = turma::with('alunos')->where('user_id',$user->id)->where('id',$request->turma_id)->first();
+
+            $turma->update([
+                'nome' => $request['nome'],
+                'local' => $request['local'],
+                'horario' => $request['horario'],
+                'dia' => $request['dia'],
+            ]);
+
+            foreach ($request['alunos'] as $value) {
+                turmaXalunos::create([
                     'aluno_id' => $value,
                     'turma_id' => $turma['id']
                 ]);
