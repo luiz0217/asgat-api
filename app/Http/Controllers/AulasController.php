@@ -14,15 +14,13 @@ class AulasController extends Controller
     public function CriarAula(Request $request)
     {
         $user = $request->user();
-        $treino = treino::where('user_id', $user['id'])->where('id', $request['treino_id'])->firt();
-        $turma = turma::where('user_id', $user['id'])->where('id', $request['turma_id'])->firt();
+        $treino = treino::where('user_id', $user['id'])->where('id', $request['treino_id'])->first();
+        $turma = turma::where('user_id', $user['id'])->where('id', $request['turma_id'])->first();
         $dados = $request->validate([
-            'nome' => 'required|string',
-            'data' => 'required',
+            'dia' => 'required',
             'hora' => 'required'
         ], [
-            'nome.required' => 'O campo nome precisa ser preenchido',
-            'data.required' => 'A data precisa ser preenchido',
+            'dia.required' => 'A data precisa ser preenchido',
             'hora.required' => 'O horario precisa ser preenchido'
         ]);
 
@@ -40,10 +38,31 @@ class AulasController extends Controller
             return response()->json(['error' => 'Faltando o mes']);
         }
 
-        $aulas = aulas::whereRaw("DATE_FORMAT(data, '%Y-%m')=?", [$mes])
-        ->where('user_id',$user['id'])
-        ->orderBy('data')
+        $aulas = aulas::leftJoin('turmas','aulas.turma_id','=','turmas.id')
+        //TODO selecionar mes
+        ->where('turmas.user_id',$user['id'])
+        ->select([
+            'aulas.*',
+            'turmas.nome',
+            'turmas.local',
+            'turmas.horario',
+            ])
+        ->orderBy('turmas.dia')
         ->get();
+
+
+        /*
+                 $recibos = recibo::leftJoin('funcionarios','recibos.funcionario_id','=','funcionarios.id')
+            ->where('recibos.user_id',$user['id'])
+            ->whereBetween('data',[$request['dataInicial'],$request['dataFinal']])
+            ->select('recibos.*','funcionarios.nome')
+            ->get();
+        
+                    $dias = diaTrabalhado::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->where('funcionario_id',$funci['id'])->where('verificador_recibo', false)->get();
+            $diasRecibo = diaTrabalhado::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->where('funcionario_id',$funci['id'])->where('verificador_recibo', true)->get();
+            
+        
+        */
 
         return response()->json($aulas);
     }
