@@ -22,6 +22,8 @@ class TreinosController extends Controller
                     'nome' => $value,
                     'treino_id' => $treino['id'],
                 ]);
+
+                return response()->json('Treino Criado');
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -42,6 +44,8 @@ class TreinosController extends Controller
                     'nome' => $value,
                     'treino_id' => $treino['id'],
                 ]);
+
+                return response()->json('Treino Atualizado');    
             }
         } catch (\Throwable $th) {
             throw $th;

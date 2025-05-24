@@ -27,7 +27,7 @@ class TurmaController extends Controller
                 ]);
             }
 
-            return response()->json('turma criada');
+            return response()->json('Turma Criada');
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -53,7 +53,7 @@ class TurmaController extends Controller
                 ]);
             }
 
-            return response()->json('turma criada');
+            return response()->json('Turma Atualizada');
         } catch (\Throwable $th) {
             throw $th;
         }

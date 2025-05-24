@@ -28,7 +28,7 @@ class AlunosController extends Controller
                 'user_id' => $user['id'],
             ]);
 
-            return response()->json(['message' => 'aluno cadastrado']);
+            return response()->json(['message' => 'Aluno Cadastrado']);
         } catch (\Throwable $th) {
             return response()->json($th);
         }
@@ -56,6 +56,8 @@ class AlunosController extends Controller
                 'contato' => $request['contato'],
                 'faixa' => $request['faixa'],
             ]);
+
+            return response()->json('Aluno Atualizado');
         } catch (\Throwable $th) {
             throw $th;
         }

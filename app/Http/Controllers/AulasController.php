@@ -50,20 +50,6 @@ class AulasController extends Controller
         ->orderBy('turmas.dia')
         ->get();
 
-
-        /*
-                 $recibos = recibo::leftJoin('funcionarios','recibos.funcionario_id','=','funcionarios.id')
-            ->where('recibos.user_id',$user['id'])
-            ->whereBetween('data',[$request['dataInicial'],$request['dataFinal']])
-            ->select('recibos.*','funcionarios.nome')
-            ->get();
-        
-                    $dias = diaTrabalhado::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->where('funcionario_id',$funci['id'])->where('verificador_recibo', false)->get();
-            $diasRecibo = diaTrabalhado::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->where('funcionario_id',$funci['id'])->where('verificador_recibo', true)->get();
-            
-        
-        */
-
         return response()->json($aulas);
     }
 
@@ -73,7 +59,7 @@ class AulasController extends Controller
         $aula = aulas::where('user_id',$user['id'])->where('id',$request['aula_id'])->first();
 
         $aula->turma;
-        $aula->turma->aulnos;
+        $aula->turma->alunos;
         $aula->treino;
 
         return response()->json($aula);
@@ -96,6 +82,7 @@ class AulasController extends Controller
                     'aluno_id' => $presenca['aula_id']
                 ]
             );
+            return response()->json('Aula Finalizada');
         }
     }
 }
