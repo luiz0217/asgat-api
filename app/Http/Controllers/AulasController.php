@@ -70,9 +70,13 @@ class AulasController extends Controller
     public function BuscarAula(Request $request)
     {
         $user = $request->user();
-        $aulas = aulas::where('user_id',$user['id'])->where('id',$request['aula_id'])->first();
+        $aula = aulas::where('user_id',$user['id'])->where('id',$request['aula_id'])->first();
 
-        return response()->json($aulas);
+        $aula->turma;
+        $aula->turma->aulnos;
+        $aula->treino;
+
+        return response()->json($aula);
     }
 
     public function FinalizarAula(Request $request)

@@ -14,4 +14,15 @@ class aulas extends Model
         'treino_id',
         'user_id',
     ];
+
+    
+    public function turma()
+    {
+        return $this->belongsTo(turma::class);
+    }
+
+    public function treino()
+    {
+        return $this->belongsTo(treino::class);
+    }
 }
