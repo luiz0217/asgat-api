@@ -72,15 +72,16 @@ class AulasController extends Controller
 
         $dados = $request->validate([
             'aula_id' => 'required',
-            'presenca' => 'required'
+            'presencas' => 'required'
         ]);
-
+        //return response()->json($dados['presencas']);
         foreach ($dados['presencas'] as $presenca) {
+            //return response()->json($presenca);
             presencas::updateOrCreate(
                 [
                     'presenca' => $presenca['presenca'],
                     'aula_id' => $dados['aula_id'],
-                    'aluno_id' => $presenca['aula_id']
+                    'aluno_id' => $presenca['aluno_id']
                 ]
             );
             return response()->json('Aula Finalizada');
