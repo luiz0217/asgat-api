@@ -59,6 +59,7 @@ class AulasController extends Controller
             $user = $request->user();
             $aula = aulas::where('user_id',$user['id'])->where('id',$request['aula_id'])->first();
     
+            return response()->json('aqui');
             $aula->turma;
             $aula->turma->alunos;
             $aula->treino;
@@ -66,7 +67,7 @@ class AulasController extends Controller
     
             return response()->json($aula);
         } catch (\Throwable $th) {
-           return response()->json(['erro'=> $th->error_log]);
+           return response()->json(['erro'=> $th]);
         }
     }
 
