@@ -66,7 +66,7 @@ class AulasController extends Controller
     
             return response()->json($aula);
         } catch (\Throwable $th) {
-            throw $th;
+           return response()->json(['erro'=> $th]);
         }
     }
 
