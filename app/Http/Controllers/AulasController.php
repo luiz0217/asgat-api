@@ -88,7 +88,7 @@ class AulasController extends Controller
             ], 422);
         } catch (\Throwable $th) {
             // Log the actual error
-            \Log::error('Error fetching aula: ' . $th->getMessage(), [
+            Log::error('Error fetching aula: ' . $th->getMessage(), [
                 'user_id' => $request->user()->id ?? null,
                 'aula_id' => $request['aula_id'] ?? null,
                 'trace' => $th->getTraceAsString()
