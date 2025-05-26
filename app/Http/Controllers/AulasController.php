@@ -64,7 +64,7 @@ class AulasController extends Controller
     $aula->turma;
     //$aula->turma->alunos;
     $aula->treino;
-    //$aula->treino->exercicios;
+    $aula->treino->exercicios;
 
     /*
     $aula = aulas::with(['turma.alunos', 'treino.exercicios'])
