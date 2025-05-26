@@ -67,7 +67,7 @@ class AulasController extends Controller
         return response()->json(['error' => 'aula_id is required'], 400);
     }
     
-    $aula = Aula::with(['turma.alunos', 'treino.exercicios'])
+    $aula = aulas::with(['turma.alunos', 'treino.exercicios'])
         ->where('user_id', $user->id)
         ->where('id', $request->aula_id)
         ->first();
@@ -79,11 +79,11 @@ class AulasController extends Controller
     return response()->json($aula);
     
 } catch (\Exception $e) {
-    Log::error('Aula fetch error: ' . $e->getMessage());
+    Log::error('Aula fetch error: ' . $e);
     
     return response()->json([
         'error' => 'Server error',
-        'message' => $e->getMessage() // Remove this in production
+        'message' => $e
     ], 500);
 }
         
