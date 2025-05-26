@@ -62,7 +62,7 @@ class AulasController extends Controller
     $aula = aulas::where('user_id',$user['id'])->where('id',$request['aula_id'])->first();
 
     $aula->turma;
-    $aula->turma->alunos;
+    //$aula->turma->alunos;
     $aula->treino;
     //$aula->treino->exercicios;
 
