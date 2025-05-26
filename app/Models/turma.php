@@ -29,6 +29,6 @@ class turma extends Model
 
     public function alunos()
     {
-        return $this->belongsToMany(Aluno::class, 'turmasxalunos', 'turma_id', 'aluno_id');
+        return $this->belongsToMany(Aluno::class, 'turmasxalunos', 'aluno_id', 'turma_id');
     }
 }

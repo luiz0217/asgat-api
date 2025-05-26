@@ -61,7 +61,6 @@ class AulasController extends Controller
     
             $aula->turma;
             $aula->turma->alunos;
-            return response()->json('aqui');
             $aula->treino;
             $aula->treino->exercicios;
     
