@@ -8,6 +8,7 @@ use App\Models\treino;
 use Illuminate\Http\Request;
 use App\Models\turma;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Log;
 
 class AulasController extends Controller
 {
@@ -38,17 +39,17 @@ class AulasController extends Controller
             return response()->json(['error' => 'Faltando o mes']);
         }
 
-        $aulas = aulas::leftJoin('turmas','aulas.turma_id','=','turmas.id')
-        //TODO selecionar mes
-        ->where('turmas.user_id',$user['id'])
-        ->select([
-            'aulas.*',
-            'turmas.nome',
-            'turmas.local',
-            'turmas.horario',
+        $aulas = aulas::leftJoin('turmas', 'aulas.turma_id', '=', 'turmas.id')
+            //TODO selecionar mes
+            ->where('turmas.user_id', $user['id'])
+            ->select([
+                'aulas.*',
+                'turmas.nome',
+                'turmas.local',
+                'turmas.horario',
             ])
-        ->orderBy('turmas.dia')
-        ->get();
+            ->orderBy('turmas.dia')
+            ->get();
 
         return response()->json($aulas);
     }
@@ -56,17 +57,46 @@ class AulasController extends Controller
     public function BuscarAula(Request $request)
     {
         try {
+            // Validate request
+            $request->validate([
+                'aula_id' => 'required|integer|exists:aulas,id'
+            ]);
+
             $user = $request->user();
-            $aula = aulas::where('user_id',$user['id'])->where('id',$request['aula_id'])->first();
-    
-            $aula->turma;
-            $aula->turma->alunos;
-            $aula->treino;
-            $aula->treino->exercicios;
-    
+
+            // Use eager loading to reduce database queries
+            $aula = aulas::with([
+                'turma.alunos',
+                'treino.exercicios'
+            ])
+                ->where('user_id', $user['id'])
+                ->where('id', $request['aula_id'])
+                ->first();
+
+            // Check if aula exists
+            if (!$aula) {
+                return response()->json([
+                    'error' => 'Aula not found or you don\'t have permission to access it'
+                ], 404);
+            }
+
             return response()->json($aula);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'error' => 'Validation failed',
+                'details' => $e->errors()
+            ], 422);
         } catch (\Throwable $th) {
-           return response()->json(['erro'=> $th->error_log]);
+            // Log the actual error
+            \Log::error('Error fetching aula: ' . $th->getMessage(), [
+                'user_id' => $request->user()->id ?? null,
+                'aula_id' => $request['aula_id'] ?? null,
+                'trace' => $th->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'error' => 'An error occurred while fetching the aula'
+            ], 500);
         }
     }
 
