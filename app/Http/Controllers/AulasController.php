@@ -60,9 +60,10 @@ class AulasController extends Controller
     $user = $request->user();
     
     $aula = aulas::where('user_id',$user['id'])->where('id',$request['aula_id'])->first();
-
+    
+    return response()->json($aula->turma);
     $aula->turma;
-    //$aula->turma->alunos;
+    $aula->turma->alunos;
     $aula->treino;
     $aula->treino->exercicios;
 
@@ -75,7 +76,6 @@ class AulasController extends Controller
     */
     
     //return response()->json($aula);
-    return response()->json('chegou aqui');
     
 
         
