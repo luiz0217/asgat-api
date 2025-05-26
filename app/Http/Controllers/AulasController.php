@@ -8,6 +8,7 @@ use App\Models\treino;
 use Illuminate\Http\Request;
 use App\Models\turma;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Log;
 
 class AulasController extends Controller
 {
@@ -55,19 +56,37 @@ class AulasController extends Controller
 
     public function BuscarAula(Request $request)
     {
-        try {
-            $user = $request->user();
-            $aula = aulas::where('user_id',$user['id'])->where('id',$request['aula_id'])->first();
+       try {
+    $user = $request->user();
     
-            $aula->turma;
-            $aula->turma->alunos;
-            $aula->treino;
-            $aula->treino->exercicios;
+    if (!$user) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
     
-            return response()->json($aula);
-        } catch (\Throwable $th) {
-           return response()->json(['erro'=> $th]);
-        }
+    if (!$request->aula_id) {
+        return response()->json(['error' => 'aula_id is required'], 400);
+    }
+    
+    $aula = Aula::with(['turma.alunos', 'treino.exercicios'])
+        ->where('user_id', $user->id)
+        ->where('id', $request->aula_id)
+        ->first();
+    
+    if (!$aula) {
+        return response()->json(['error' => 'Aula not found'], 404);
+    }
+    
+    return response()->json($aula);
+    
+} catch (\Exception $e) {
+    Log::error('Aula fetch error: ' . $e->getMessage());
+    
+    return response()->json([
+        'error' => 'Server error',
+        'message' => $e->getMessage() // Remove this in production
+    ], 500);
+}
+        
     }
 
     public function FinalizarAula(Request $request)
