@@ -56,36 +56,20 @@ class AulasController extends Controller
 
     public function BuscarAula(Request $request)
     {
-       try {
+
     $user = $request->user();
     
-    if (!$user) {
-        return response()->json(['error' => 'Unauthorized'], 401);
-    }
-    
-    if (!$request->aula_id) {
-        return response()->json(['error' => 'aula_id is required'], 400);
-    }
     
     $aula = aulas::with(['turma.alunos', 'treino.exercicios'])
         ->where('user_id', $user->id)
         ->where('id', $request->aula_id)
         ->first();
     
-    if (!$aula) {
-        return response()->json(['error' => 'Aula not found'], 404);
-    }
+    
     
     return response()->json($aula);
     
-} catch (\Exception $e) {
-    Log::error('Aula fetch error: ' . $e);
-    
-    return response()->json([
-        'error' => 'Server error',
-        'message' => $e
-    ], 500);
-}
+
         
     }
 
