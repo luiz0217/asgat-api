@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('aulas', function (Blueprint $table) {
             $table->id();
             $table->date('dia');
+            $table->boolean('finalizada')->default(false);
             $table->integer('turma_id');
             $table->integer('treino_id');
             $table->integer('user_id');

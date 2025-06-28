@@ -16,4 +16,10 @@ class desempenho extends Model
         'treino_id',
         'exercicio_id',
     ];
+
+    
+    public function treino()
+    {
+        return $this->belongsTo(treino::class);
+    }
 }

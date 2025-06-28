@@ -26,4 +26,14 @@ class aluno extends Model
     {
         return $this->belongsToMany(Turma::class, 'turmasxalunos',  'aluno_id','turma_id');
     }
+
+    public function desempenho()
+    {
+        return $this->hasMany(desempenho::class);
+    }
+
+    public function presencas()
+    {
+        return $this->hasMany(presencas::class);
+    }
 }
