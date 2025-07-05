@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function (){
 
     //turmas
     Route::post('criarTurma',[TurmaController::class,'CriarTurma']);
+    Route::post('atualizarTurma',[TurmaController::class,'AtualizarTurma']);
     Route::get('buscarTurmas',[TurmaController::class,'BuscarTurmas']);
     Route::get('buscarTurma',[TurmaController::class,'BuscarTurma']);
 
