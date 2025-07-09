@@ -38,14 +38,35 @@ class AulasController extends Controller
 
         $request->validate([
             'mes' => 'required',
+            'ano' => 'required',
+            'mostraFinalizada' => 'required',
         ]);
 
         $user = $request->user();
 
+        if ($request['mes'] == 0) {
+            $aulas = aulas::leftJoin('turmas','aulas.turma_id','=','turmas.id')
+            //TODO selecionar mes
+            ->where('turmas.user_id',$user['id'])
+            ->where('finalizada', $request['mostraFinalizada'])
+            ->select([
+                'aulas.*',
+                'turmas.nome',
+                'turmas.local',
+                'turmas.horario',
+                ])
+            ->orderBy('turmas.dia')
+            ->get();
+
+            return response()->json($aulas);
+        }
+
         $aulas = aulas::leftJoin('turmas','aulas.turma_id','=','turmas.id')
         //TODO selecionar mes
         ->where('turmas.user_id',$user['id'])
-        ->where('finalizada',false)
+        ->where('finalizada', $request['mostraFinalizada'])
+        ->whereYear('aulas.dia', $request['ano'])
+        ->whereMonth('aulas.dia', $request['mes'])
         ->select([
             'aulas.*',
             'turmas.nome',
