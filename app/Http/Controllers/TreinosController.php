@@ -14,7 +14,8 @@ class TreinosController extends Controller
         try {
             $treino = treino::create([
                 'tipo' => $request['treino'], 
-                'user_id' => $user['id']
+                'user_id' => $user['id'],
+                'nome' => $request['nome'],
             ]);
 
             foreach ($request['exercicios'] as $value) {

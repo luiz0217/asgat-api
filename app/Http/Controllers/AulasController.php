@@ -46,7 +46,6 @@ class AulasController extends Controller
 
         if ($request['mes'] == 0) {
             $aulas = aulas::leftJoin('turmas','aulas.turma_id','=','turmas.id')
-            //TODO selecionar mes
             ->where('turmas.user_id',$user['id'])
             ->where('finalizada', $request['mostraFinalizada'])
             ->select([
@@ -62,7 +61,6 @@ class AulasController extends Controller
         }
 
         $aulas = aulas::leftJoin('turmas','aulas.turma_id','=','turmas.id')
-        //TODO selecionar mes
         ->where('turmas.user_id',$user['id'])
         ->where('finalizada', $request['mostraFinalizada'])
         ->whereYear('aulas.dia', $request['ano'])

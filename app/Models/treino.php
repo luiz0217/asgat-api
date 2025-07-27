@@ -9,6 +9,7 @@ class treino extends Model
     protected $table = 'treinos';
 
     protected $fillable = [
+        'nome',
         'tipo', 
         'user_id'
     ];

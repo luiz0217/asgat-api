@@ -54,7 +54,7 @@ class TurmaController extends Controller
             
             foreach ($request->alunos as $value) {
                 turmaXalunos::create([
-                    'aluno_id' => $value,
+                    'aluno_id' => $value['id'],
                     'turma_id' => $turma['id']
                 ]);
             }
