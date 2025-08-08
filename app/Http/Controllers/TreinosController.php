@@ -24,8 +24,9 @@ class TreinosController extends Controller
                     'treino_id' => $treino['id'],
                 ]);
 
-                return response()->json('Treino Criado');
             }
+            
+            return response()->json('Treino Criado');
         } catch (\Throwable $th) {
             throw $th;
         }

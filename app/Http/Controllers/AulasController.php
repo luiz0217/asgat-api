@@ -107,10 +107,10 @@ class AulasController extends Controller
     public function FinalizarAula(Request $request)
     {
         $user = $request->user();
-
         $dados = $request->validate([
             'aula_id' => 'required',
-            'presencas' => 'required'
+            'presencas' => 'required',
+            'desempenho' => 'required',
         ]);
         foreach ($dados['presencas'] as $presenca) {
             presencas::updateOrCreate(
@@ -121,16 +121,20 @@ class AulasController extends Controller
                 ]
             );
         }
-        foreach ($dados['desempenho'] as $desempenho) {
-            $ex = exercicios::where('id',$desempenho->key)->first();
-            desempenho::updateOrCreate([
-                'nota' => $desempenho['nota'],
-                'observacao' => 'nao tem',
-                'aula_id' => $request['aula_id'],
-                'aluno_id' =>  $desempenho['aluno_id'],
-                'treino_id' => $ex['treino_id'],
-                'exercicio_id' => $desempenho->key,
-            ]);
+
+        foreach ($dados['desempenho'] as $exercicio_id => $alunos) {
+            $ex = exercicios::where('id', $exercicio_id)->first();
+
+            foreach ($alunos as $infoAluno) {
+                desempenho::updateOrCreate([
+                    'nota' => $infoAluno['nota'],
+                    'observacao' => 'nao tem',
+                    'aula_id' => $request['aula_id'],
+                    'aluno_id' => $infoAluno['aluno_id'],
+                    'treino_id' => $ex['treino_id'],
+                    'exercicio_id' => $exercicio_id,
+                ]);
+            }
         }
 
         aulas::where('id',$request['aula_id'])->update([
@@ -139,72 +143,3 @@ class AulasController extends Controller
         return response()->json('Aula Finalizada');
     }
 }
-/*
-
-
-{aula_id: 3, presencas: [{aluno_id: 1, presenca: true}], desempenho: {2: [{aluno_id: 1, nota: 6}]}}
-aula_id
-: 
-3
-desempenho
-: 
-{2: [{aluno_id: 1, nota: 6}]}
-2
-: 
-[{aluno_id: 1, nota: 6}]
-presencas
-: 
-[{aluno_id: 1, presenca: true}]
-0
-: 
-{aluno_id: 1, presenca: true}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{
-    aula_id: 0,
-    presencas: [
-        {
-            aluno_id: 0,
-            presenca: true,
-        }  
-          
-    ],
-    desempenho: {
-        ex1: [
-                {
-                    aluno_id: 0,
-                    nota: 5
-                },
-                {
-                    aluno_id: 0,
-                    nota: 5
-                }
-            ],
-        ex2: [
-                {
-                    aluno_id: 0,
-                    nota: 5
-                },
-                {
-                    aluno_id: 0,
-                    nota: 5
-                }
-            ],
-    }
-}
-
-*/
