@@ -123,17 +123,19 @@ class AulasController extends Controller
         }
 
         foreach ($dados['desempenho'] as $exercicio_id => $alunos) {
-            $ex = exercicios::where('id', $exercicio_id)->first();
-
-            foreach ($alunos as $infoAluno) {
-                desempenho::updateOrCreate([
-                    'nota' => $infoAluno['nota'],
-                    'observacao' => 'nao tem',
-                    'aula_id' => $request['aula_id'],
-                    'aluno_id' => $infoAluno['aluno_id'],
-                    'treino_id' => $ex['treino_id'],
-                    'exercicio_id' => $exercicio_id,
-                ]);
+            if($exercicio_id != ''){
+                $ex = exercicios::where('id', $exercicio_id)->first();
+    
+                foreach ($alunos as $infoAluno) {
+                    desempenho::updateOrCreate([
+                        'nota' => $infoAluno['nota'],
+                        'observacao' => 'nao tem',
+                        'aula_id' => $request['aula_id'],
+                        'aluno_id' => $infoAluno['aluno_id'],
+                        'treino_id' => $ex['treino_id'],
+                        'exercicio_id' => $exercicio_id,
+                    ]);
+                }
             }
         }
 
