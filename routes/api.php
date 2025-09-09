@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\TreinosController;
 use App\Http\Controllers\TurmaController;
+use App\Http\Controllers\DashboardController;
 
 Route::post('loginToken', [AuthenticatedSessionController::class, 'createToken']);
 
@@ -44,3 +45,6 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('finalizarAula',[AulasController::class,'FinalizarAula']);
 
 });
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::post('/dashboard/filtrar', [DashboardController::class, 'filtrar'])->name('dashboard.filtrar');
