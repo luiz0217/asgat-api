@@ -57,9 +57,9 @@ class DashboardController extends Controller
         
       
         $queryEstatisticas = '
-             SELECT 
+          SELECT 
                 COUNT(DISTINCT a.id) as total_alunos,
-                COUNT(p.id) as total_presencas,
+                COUNT(DISTINCT p.id) as total_presencas,
                 COALESCE(MAX(n.nota), 0) as maior_nota,
                 COALESCE(AVG(n.nota), 0) as media_geral
             FROM alunos a
@@ -71,7 +71,9 @@ class DashboardController extends Controller
         $queryGrafico = '
              SELECT 
                 a.nome as aluno,
-                COUNT(p.id) as presencas,
+                (
+                  select COUNT(t1.id) from presencas t1 where t1.aluno_id = a.id
+                ) as presencas,
                 COALESCE(AVG(n.nota), 0) as media_nota
             FROM alunos a
             LEFT JOIN presencas p ON a.id = p.aluno_id
