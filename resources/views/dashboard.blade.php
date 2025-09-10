@@ -351,8 +351,7 @@
         <div class="header">
             <div class="logo">
                 <div class="logo-text">
-                    TAEKWONDO<br>
-                    PARANÁ
+                    <img src='https://asgat-training.vercel.app/logo.png' width="100" height="100">
                 </div>
             </div>
             <h1 class="title">Dashboard</h1>
