@@ -76,7 +76,7 @@ class DashboardController extends Controller
             FROM alunos a
             LEFT JOIN presencas p ON a.id = p.aluno_id
             LEFT JOIN desempenhos n ON a.id = n.aluno_id
-            GROUP BY a.nome
+         
         ';
         
         $params = [];
@@ -99,8 +99,8 @@ class DashboardController extends Controller
         
     
         if (!empty($whereConditions)) {
-            $queryEstatisticas .= ' AND ' . implode(' AND ', $whereConditions);
-            $queryGrafico .= ' AND ' . implode(' AND ', $whereConditions);
+            $queryEstatisticas .= ' WHERE ' . implode(' AND ', $whereConditions);
+            $queryGrafico .= ' WHERE ' . implode(' AND ', $whereConditions);
         }
         
         $queryGrafico .= ' GROUP BY a.id, a.nome ORDER BY media_nota DESC LIMIT 10';
